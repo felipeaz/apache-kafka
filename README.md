@@ -5,4 +5,4 @@ Kafka is na open-source event streaming platform used for publishing and process
 high throughput.
 
 The idea of this project is put in practice what I've learned about Apache Kafka by creating a simple
-broker that produce and consume 10 messages.
+broker that produce and consume infinite messages. Only one Broker is running on the application.
