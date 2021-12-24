@@ -8,14 +8,12 @@ import (
 )
 
 type Producer struct {
-	ctx     context.Context
 	brokers []string
 	writer  kafka.Writer
 }
 
-func New(ctx context.Context, topic string, brokers []string) *Producer {
+func New(topic string, brokers []string) *Producer {
 	return &Producer{
-		ctx:     ctx,
 		brokers: brokers,
 		writer: kafka.Writer{
 			Addr:  kafka.TCP(brokers...),
@@ -24,8 +22,8 @@ func New(ctx context.Context, topic string, brokers []string) *Producer {
 	}
 }
 
-func (p *Producer) Produce(message []byte) error {
-	err := p.writer.WriteMessages(p.ctx, kafka.Message{
+func (p *Producer) Produce(ctx context.Context, message []byte) error {
+	err := p.writer.WriteMessages(ctx, kafka.Message{
 		Key:   []byte(uuid.NewString()),
 		Value: message,
 	})
