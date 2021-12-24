@@ -9,20 +9,20 @@ import (
 
 type Producer struct {
 	brokers []string
-	writer  kafka.Writer
+	writer  *kafka.Writer
 }
 
 func New(topic string, brokers []string) *Producer {
 	return &Producer{
 		brokers: brokers,
-		writer: kafka.Writer{
+		writer: &kafka.Writer{
 			Addr:  kafka.TCP(brokers...),
 			Topic: topic,
 		},
 	}
 }
 
-func (p *Producer) Produce(ctx context.Context, message []byte) error {
+func (p *Producer) Produce(ctx context.Context, message []byte) {
 	err := p.writer.WriteMessages(ctx, kafka.Message{
 		Key:   []byte(uuid.NewString()),
 		Value: message,
@@ -30,6 +30,5 @@ func (p *Producer) Produce(ctx context.Context, message []byte) error {
 	if err != nil {
 		panic("failed to write message to broker")
 	}
-	fmt.Printf("Broker received a message: %s\n", string(message))
-	return nil
+	fmt.Printf("sent: %s\n", string(message))
 }
