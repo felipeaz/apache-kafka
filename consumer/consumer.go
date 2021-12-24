@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/segmentio/kafka-go"
+	"time"
 )
 
 type Consumer struct {
@@ -27,5 +28,6 @@ func (c *Consumer) Consume(ctx context.Context) {
 			panic("failed to read message from broker")
 		}
 		fmt.Printf("received: %s\n", string(msg.Value))
+		time.Sleep(time.Second * 2)
 	}
 }

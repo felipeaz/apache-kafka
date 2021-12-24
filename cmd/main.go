@@ -9,6 +9,10 @@ import (
 	"os"
 )
 
+const (
+	numberOfMessages = 10
+)
+
 func main() {
 	topic, err := os.LookupEnv("MESSAGE_TOPIC")
 	if !err {
@@ -26,8 +30,10 @@ func main() {
 	ctx := context.TODO()
 	go c.Consume(ctx)
 
-	for i := 0; i < 10; i++ {
+	var i int
+	for {
 		msg := fmt.Sprintf("Msg ID: %d", i)
 		p.Produce(ctx, []byte(msg))
+		i++
 	}
 }
